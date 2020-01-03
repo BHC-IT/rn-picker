@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 function noop(){}
 
 function isEmpty(obj){
-	return Object.entries(obj).length === 0 && obj.constructor === Object
+	return Object.entries(obj).length === 0
 }
 
 export default class Picker extends React.Component {
