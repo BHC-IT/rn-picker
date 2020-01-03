@@ -1,6 +1,6 @@
 {
 	"name": "@bhc/rn-picker",
-	"version":"0.0.2",
+	"version":"0.0.3",
 	"description": "Basic picker for react native",
 	"main": "src/Picker.js",
 	"keywords": [
