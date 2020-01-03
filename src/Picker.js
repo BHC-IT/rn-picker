@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 
 function noop(){}
 
+function isEmpty(obj){
+	return Object.entries(obj).length === 0 && obj.constructor === Object
+}
+
 export default class Picker extends React.Component {
 
 	constructor(props){
@@ -80,15 +84,19 @@ export default class Picker extends React.Component {
 	render() {
 		const toRender = React.Children.map(this.props.children, e => {
 			return {label:e.props.label, value:e.props.value, style:e.props.style};
-		})
+		});
+		let styleForSelection = this.props.selectedStyle;
+		if (!isEmpty(this.props.placeholderStyle) && !this.state.label){
+			styleForSelection = this.props.placeholderStyle;
+		}
 		return (
 			<View style={{height:25}} >
 				<TouchableOpacity style={[styles.container, this.props.style]} onPress={() => this.props.enable ? this.toggle() : noop} activeOpacity={1} >
-					<Text numberOfLines={1} style={[styles.placeholder, this.state.label ? this.props.selectedStyle : this.props.placeholderStyle]} >{this.state.label ? this.state.label : this.props.placeholder}</Text>
+					<Text numberOfLines={1} style={[styles.placeholder, styleForSelection]} >{this.state.label ? this.state.label : this.props.placeholder}</Text>
 				</TouchableOpacity>
 				{this.state.open && this.props.enable ?
-					<View style={[styles.container, this.props.dropDownStyle, styles.above]} >
-						<Text numberOfLines={1} style={[styles.label, this.props.resetStyle]} onPress={() => this.reset()} >{this.props.reset}</Text>
+					<View style={[styles.container, !isEmpty(this.props.dropDownStyle) ? this.props.dropDownStyle : this.props.style, styles.above]} >
+						<Text numberOfLines={1} style={[styles.label, !isEmpty(this.props.resetStyle) ? this.props.resetStyle : this.props.labelStyle]} onPress={() => this.reset()} >{this.props.reset}</Text>
 						{toRender.map((e, i) => {
 							return (
 								<Text numberOfLines={1} key={i} style={[styles.label, this.props.labelStyle, e.style]} onPress={() => this.set(e)} >{e.label}</Text>
@@ -128,6 +136,7 @@ Picker.defaultProps = {
 	placeholderStyle:{},
 	selectedStyle:{},
 	dropDownStyle:{},
+	resetStyle:{},
 	reset:'-',
 	value:null,
 	defaultValue:null,
