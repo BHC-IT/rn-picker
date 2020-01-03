@@ -20,7 +20,6 @@
 	"devDependencies": {
 		"babel-preset-expo": "^5.1.1"
 	},
-	"private": true,
-	"expo": {
-	}
+	"private": false,
+	"publishConfig": { "registry": "https://npm.pkg.github.com/" }
 }
