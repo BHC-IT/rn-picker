@@ -1,6 +1,6 @@
 {
 	"name": "@bhc/rn-picker",
-	"version":"0.0.2",
+	"version":"0.0.3",
 	"description": "Basic picker for react native",
 	"main": "src/Picker.js",
 	"keywords": [
@@ -15,6 +15,11 @@
 	],
 	"license": "MIT",
 	"scripts": {
+		"start": "expo start",
+		"android": "expo start --android",
+		"ios": "expo start --ios",
+		"web": "expo start --web",
+		"eject": "expo eject"
 	},
 	"dependencies": {
 		"react": "16.8.3",
