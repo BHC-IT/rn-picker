@@ -1,6 +1,6 @@
 {
 	"name": "@bhc/rn-picker",
-	"version":"0.0.3",
+	"version":"0.0.4",
 	"description": "Basic picker for react native",
 	"main": "src/Picker.js",
 	"keywords": [
@@ -22,11 +22,11 @@
 		"eject": "expo eject"
 	},
 	"dependencies": {
-		"react": "16.8.3",
-		"react-dom": "^16.8.6",
-		"react-native": "0.59.8"
 	},
 	"devDependencies": {
+		"react": "16.8.3",
+		"react-dom": "^16.8.6",
+		"react-native": "0.59.8",
 		"babel-preset-expo": "^5.1.1"
 	},
 	"private": false,
