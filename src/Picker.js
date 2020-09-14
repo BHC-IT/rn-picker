@@ -10,6 +10,14 @@ function isEmpty(obj){
 
 var all_mounted = {};
 
+export function closeAll() {
+	Object.keys(all_mounted).map(e => {
+		const i = all_mounted[e];
+		if (i.state.open)
+			i.close();
+	});
+}
+
 export default class Picker extends React.Component {
 
 	constructor(props){
@@ -50,14 +58,14 @@ export default class Picker extends React.Component {
 		if (!this.props.enable)
 			return;
 		this.setState({open:true});
-		this.props.onOpen().bind(this);
+		this.props.onOpen.bind(this)();
 	}
 
 	close = () => {
 		if (!this.props.enable)
 			return;
 		this.setState({open:false});
-		this.props.onClose().bind(this);
+		this.props.onClose.bind(this)();
 	}
 
 	toggle = () => {
