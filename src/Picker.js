@@ -1,12 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 
 function noop(){}
 
 function isEmpty(obj){
-	return Object.entries(obj).length === 0
+	return Object.entries(obj).length === 0 && obj.constructor === Object
 }
+
+var all_mounted = {};
 
 export default class Picker extends React.Component {
 
@@ -19,6 +21,8 @@ export default class Picker extends React.Component {
 			label:null
 		}
 
+		this.id = Math.random() * 100000 | 0;
+
 		if (this.state.value){
 			let idx = this.props.children.findIndex(e => this.props.findValue(e, this.state.value))
 			if (idx >= 0){
@@ -28,20 +32,32 @@ export default class Picker extends React.Component {
 	}
 
 	componentDidMount(){
+		all_mounted[this.id] = this;
+	}
+
+	componentWillUnmount() {
+		delete all_mounted[this.id];
 	}
 
 	open = () => {
+		if (this.props.oneOpenAtTime) {
+			Object.keys(all_mounted).map(e => {
+				const i = all_mounted[e];
+				if (i.state.open)
+					i.close();
+			});
+		}
 		if (!this.props.enable)
 			return;
 		this.setState({open:true});
-		this.props.onOpen();
+		this.props.onOpen().bind(this);
 	}
 
 	close = () => {
 		if (!this.props.enable)
 			return;
 		this.setState({open:false});
-		this.props.onClose();
+		this.props.onClose().bind(this);
 	}
 
 	toggle = () => {
@@ -96,12 +112,33 @@ export default class Picker extends React.Component {
 				</TouchableOpacity>
 				{this.state.open && this.props.enable ?
 					<View style={[styles.container, !isEmpty(this.props.dropDownStyle) ? this.props.dropDownStyle : this.props.style, styles.above]} >
-						<Text numberOfLines={1} style={[styles.label, !isEmpty(this.props.resetStyle) ? this.props.resetStyle : this.props.labelStyle]} onPress={() => this.reset()} >{this.props.reset}</Text>
-						{toRender.map((e, i) => {
-							return (
-								<Text numberOfLines={1} key={i} style={[styles.label, this.props.labelStyle, e.style]} onPress={() => this.set(e)} >{e.label}</Text>
-							);
-						})}
+						{ this.props.scrollable ?
+							<ScrollView style={{height:100}} >
+								{this.props.reset ?
+									<Text numberOfLines={1} style={[styles.label, !isEmpty(this.props.resetStyle) ? this.props.resetStyle : this.props.labelStyle]} onPress={() => this.reset()} >{this.props.reset}</Text>
+									:
+									null
+								}
+								{toRender.map((e, i) => {
+									return (
+										<Text numberOfLines={1} key={i} style={[styles.label, this.props.labelStyle, e.style]} onPress={() => this.set(e)} >{e.label}</Text>
+									);
+								})}
+							</ScrollView>
+							:
+							<View style={[styles.container, !isEmpty(this.props.dropDownStyle) ? this.props.dropDownStyle : this.props.style, styles.above]} >
+								{this.props.reset ?
+									<Text numberOfLines={1} style={[styles.label, !isEmpty(this.props.resetStyle) ? this.props.resetStyle : this.props.labelStyle]} onPress={() => this.reset()} >{this.props.reset}</Text>
+									:
+									null
+								}
+								{toRender.map((e, i) => {
+									return (
+										<Text numberOfLines={1} key={i} style={[styles.label, this.props.labelStyle, e.style]} onPress={() => this.set(e)} >{e.label}</Text>
+									);
+								})}
+							</View>
+						}
 					</View>
 					:
 					null
@@ -111,23 +148,26 @@ export default class Picker extends React.Component {
 	}
 }
 
+
 Picker.propTypes = {
-	children:PropTypes.array.isRequired,
-	style:PropTypes.object,
-	placeholder:PropTypes.string,
-	placeholderStyle:PropTypes.object,
-	selectedStyle:PropTypes.object,
-	labelStyle:PropTypes.object,
-	dropDownStyle:PropTypes.object,
-	reset:PropTypes.string,
-	resetStyle:PropTypes.object,
-	onValueChange:PropTypes.func,
-	onOpen:PropTypes.func,
-	onClose:PropTypes.func,
-	enable:PropTypes.bool,
-	value:PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
-	defaultValue:PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
-	findValue:PropTypes.func,
+	children: PropTypes.array.isRequired,
+	style: PropTypes.object,
+	placeholder: PropTypes.string,
+	placeholderStyle: PropTypes.object,
+	selectedStyle: PropTypes.object,
+	labelStyle: PropTypes.object,
+	dropDownStyle: PropTypes.object,
+	reset: PropTypes.string,
+	resetStyle: PropTypes.object,
+	onValueChange: PropTypes.func,
+	onOpen: PropTypes.func,
+	onClose: PropTypes.func,
+	enable: PropTypes.bool,
+	value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
+	defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
+	findValue: PropTypes.func,
+	scrollable: PropTypes.bool,
+	oneOpenAtTime: PropTypes.bool,
 };
 
 Picker.defaultProps = {
@@ -145,6 +185,8 @@ Picker.defaultProps = {
 	onClose:()=>{},
 	enable:true,
 	findValue:(e, f) => e.props.value === f,
+	scrollable: true,
+	oneOpenAtTime: true,
 };
 
 Picker.displayName = 'Picker';
