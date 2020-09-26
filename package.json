@@ -1,6 +1,6 @@
 {
 	"name": "@bhc/rn-picker",
-	"version":"0.0.7",
+	"version": "0.0.8",
 	"description": "Basic picker for react native",
 	"main": "src/Picker.js",
 	"keywords": [
@@ -21,18 +21,20 @@
 		"web": "expo start --web",
 		"eject": "expo eject"
 	},
-	"dependencies": {
+	"peerDependencies": {
 		"react": "16.8.3",
 		"react-dom": "^16.8.6",
-		"react-native": "0.59.8"
+		"react-native": "0.63.2"
 	},
 	"devDependencies": {
-		"babel-preset-expo": "^5.1.1"
+		"babel-preset-expo": "^8.3.0"
 	},
 	"private": false,
 	"readmeFilename": "README.md",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/BHC-IT/rn-picker.git"
+	},
+	"dependencies": {
 	}
 }

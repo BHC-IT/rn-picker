@@ -114,14 +114,14 @@ export default class Picker extends React.Component {
 			styleForSelection = this.props.placeholderStyle;
 		}
 		return (
-			<View style={{height:25}} >
+			<View style={{height:this.props.style.height ? this.props.style.height : 25}} >
 				<TouchableOpacity style={[styles.container, this.props.style]} onPress={() => this.props.enable ? this.toggle() : noop} activeOpacity={1} >
 					<Text numberOfLines={1} style={[styles.placeholder, styleForSelection]} >{this.state.label ? this.state.label : this.props.placeholder}</Text>
 				</TouchableOpacity>
 				{this.state.open && this.props.enable ?
 					<View style={[styles.container, !isEmpty(this.props.dropDownStyle) ? this.props.dropDownStyle : this.props.style, styles.above]} >
 						{ this.props.scrollable ?
-							<ScrollView style={{height:100}} >
+							<ScrollView style={{height: this.props.scrollHeight}} >
 								{this.props.reset ?
 									<Text numberOfLines={1} style={[styles.label, !isEmpty(this.props.resetStyle) ? this.props.resetStyle : this.props.labelStyle]} onPress={() => this.reset()} >{this.props.reset}</Text>
 									:
@@ -176,6 +176,7 @@ Picker.propTypes = {
 	findValue: PropTypes.func,
 	scrollable: PropTypes.bool,
 	oneOpenAtTime: PropTypes.bool,
+	scrollHeight: PropTypes.number,
 };
 
 Picker.defaultProps = {
@@ -195,6 +196,7 @@ Picker.defaultProps = {
 	findValue:(e, f) => e.props.value === f,
 	scrollable: true,
 	oneOpenAtTime: true,
+	scrollHeight: 100,
 };
 
 Picker.displayName = 'Picker';
