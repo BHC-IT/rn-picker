@@ -1,6 +1,6 @@
 {
 	"name": "@bhc/rn-picker",
-	"version":"0.0.5",
+	"version":"0.0.10",
 	"description": "Basic picker for react native",
 	"main": "src/Picker.js",
 	"keywords": [
@@ -24,10 +24,15 @@
 	"dependencies": {
 	},
 	"devDependencies": {
-		"react": "16.8.3",
-		"react-dom": "^16.8.6",
-		"react-native": "0.59.8",
+		"react": "17.0.1",
+		"react-dom": "^17.0.1",
+		"react-native": "0.64.3",
 		"babel-preset-expo": "^5.1.1"
+	},
+	"peerDependencies": {
+		"react": "17.0.1",
+		"react-dom": "^17.0.1",
+		"react-native": "0.64.3"
 	},
 	"private": false,
 	"readmeFilename": "README.md",
