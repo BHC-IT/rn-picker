@@ -121,7 +121,7 @@ export default class Picker extends React.Component {
 				{this.state.open && this.props.enable ?
 					<View style={[styles.container, !isEmpty(this.props.dropDownStyle) ? this.props.dropDownStyle : this.props.style, styles.above]} >
 						{ this.props.scrollable ?
-							<ScrollView style={{height: this.props.scrollHeight}} >
+							<ScrollView nestedScrollEnabled style={{height: this.props.scrollHeight}} >
 								{this.props.reset ?
 									<Text numberOfLines={1} style={[styles.label, !isEmpty(this.props.resetStyle) ? this.props.resetStyle : this.props.labelStyle]} onPress={() => this.reset()} >{this.props.reset}</Text>
 									:

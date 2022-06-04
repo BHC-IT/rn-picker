@@ -3,5 +3,4 @@ node_modules/
 app.json
 App.js
 package-lock.json
-yarn.lock
 babel.config.js
